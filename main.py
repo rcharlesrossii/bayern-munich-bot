@@ -6,7 +6,8 @@ from LiveScore import LiveScore, Game
 from typing import List
 
 
-match_dates = {
+def tweet():
+    match_dates = {
                             20230818: 988969,
                             20230827: 989563,
                             20230902: 989543,
@@ -26,7 +27,8 @@ match_dates = {
                             20231111: 989575,
                             20231124: 989516,
                             20231129: 1071807,
-                            20231202: 989573,
+                            #20231202: 989573,
+                            20231202: 968270,
                             20231209: 989499,
                             20231212: 1071804,
                             20231216: 989454,
@@ -50,11 +52,11 @@ match_dates = {
                             20240511: 989357,
                             20240518: 989347
                             }
-team = "Bayern Munich"
-todays_date = int(datetime.today().strftime("%Y%m%d"))
-todays_id = match_dates[todays_date]
+    team = "Newcastle United"
+    #team = "Bayern Munich"
+    todays_date = int(datetime.today().strftime("%Y%m%d"))
+    todays_id = match_dates[todays_date]
 
-def tweet():
     if todays_date in match_dates.keys():
         match_dictionary = {
                             "date": todays_date,
@@ -71,71 +73,75 @@ def tweet():
                             "status": 0
                             }
     
-    livescore = LiveScore()
-    match_info: List[Game] = livescore.getGames(todays_date, team)
-    match_events = livescore.getGameInPlay(todays_id)
+        livescore = LiveScore()
+        match_info: List[Game] = livescore.getGames(todays_date, team)
 
-    events = match_events.events
+        competition = match_info[0].competition
+        home_team = match_info[0].home_team
+        away_team = match_info[0].away_team
 
-    competition = match_info[0].competition
-    home_team = match_info[0].home_team
-    away_team = match_info[0].away_team
+        tweet_log = []
+        tweet_log_length = 0
 
-    tweet_log = []
-    tweet_log_length = 0
+        match_dictionary.update({"competition": competition})
+        match_dictionary.update({"home team": home_team})
+        match_dictionary.update({"away team": away_team})
 
-    match_dictionary.update({"competition": competition})
-    match_dictionary.update({"home team": home_team})
-    match_dictionary.update({"away team": away_team})
+        twitter.tweet(match_dictionary)
+        print(match_dictionary)
 
-    twitter.tweet(match_dictionary)
+        while match_dictionary["status"] != "FT":
+            match_events = livescore.getGameInPlay(todays_id)
+            events = match_events.events
+            if events is not None:
+                for event in events:
+                    if event.team == match_dictionary["home team"]:
+                        if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
+                            match_dictionary["home score"] += 1
 
-    while match_dictionary["status"] != "FT":
-        if events is not None:
-            for event in events:
-                if event.team == match_dictionary["home team"]:
-                    if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
-                        match_dictionary["home score"] += 1
+                    if event.team == match_dictionary["away team"]:
+                        if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
+                            match_dictionary["away score"] += 1
 
-                if event.team == match_dictionary["away team"]:
-                    if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
-                        match_dictionary["away score"] += 1
+                    end_times = [45, 90, 105, 120]
+                    minute = event.minute
+                    if minute in end_times:
+                        minute = str(minute) + "' + " + str(event.minute_extra)
+                    match_dictionary.update({"minute": minute})
 
-                end_times = [45, 90, 105, 120]
-                minute = event.minute
-                if minute in end_times:
-                    minute = str(minute) + "' + " + str(event.minute_extra)
-                match_dictionary.update({"minute": minute})
+                    team = event.team
+                    match_dictionary.update({"team": team})
+                    
+                    player = event.player
+                    match_dictionary.update({"player": player})
 
-                team = event.team
-                match_dictionary.update({"team": team})
+                    event_type = event.event_type
+                    match_dictionary.update({"event": event_type})
+
+                    if match_dictionary not in tweet_log:
+                        tweet_log.append(match_dictionary)
+                        tweet_log_length += 1
+                        twitter.tweet(tweet_log[-1])
+                        print(tweet_log[-1])
+                        time.sleep(1.5)
+
+                    status = match_events.status
+                    match_dictionary.update({"status": status})
                 
-                player = event.player
-                match_dictionary.update({"player": player})
+                    if status == "FT":
+                        match_dictionary.update({"minute": status})
+                        match_dictionary.update({"team": "ALL"})
+                        match_dictionary.update({"player": "ALL"})
+                        match_dictionary.update({"event": status})
+                        tweet_log.append(match_dictionary)
+                        twitter.tweet(tweet_log[-1])
+                        print(tweet_log[-1])
+                        time.sleep(1.5)
+                
+        time.sleep(1.5)
 
-                event_type = event.event_type
-                match_dictionary.update({"event": event_type})
-
-                if match_dictionary not in tweet_log:
-                    tweet_log.append(match_dictionary)
-                tweet_log_length += 1
-                twitter.tweet(tweet_log[-1])
-                time.sleep(1.5)
-
-            status = match_events.status
-            match_dictionary.update({"status": status})
-            
-            if status == "FT":
-                match_dictionary.update({"minute": status})
-                match_dictionary.update({"team": "ALL"})
-                match_dictionary.update({"player": "ALL"})
-                match_dictionary.update({"event": status})
-                tweet_log.append(match_dictionary)
-                twitter.tweet(tweet_log[-1])
-                time.sleep(1.5)
-
-schedule.every(1.5).minutes.until(timedelta(hours=3)).do(tweet)
+schedule.every(1).minute.until(timedelta(hours=3)).do(tweet)
 
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(1.5)
