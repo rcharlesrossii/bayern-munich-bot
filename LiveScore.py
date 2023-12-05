@@ -128,26 +128,46 @@ class LiveScore:
         home_score = response_json['Tr1']
         away_score = response_json['Tr2']
 
-
         events_response = httpx.get(f'https://prod-public-api.livescore.com/v1/api/app/incidents/soccer/{id}?locale=en')
 
         events_response_json = events_response.json()
 
         if 'Incs' in events_response_json:
-            events = []
+            if len(events_response_json['Incs']) > 0:
+                events = []
 
-            for root_event in events_response_json['Incs']:
-                for event in events_response_json['Incs'][root_event]:
-                    if 'Incs' in event:
-                        for sub_event in event['Incs']:
-                            event_id = sub_event['ID']
-                            minute = sub_event['Min'] if 'Min' in sub_event else None
-                            minute_extra = sub_event['MinEx'] if 'MinEx' in sub_event else None
-                            player = sub_event['Pn']
-                            team = home_team if sub_event['Nm'] == 1 else away_team
-                            event_type = self.convertType(sub_event['IT'])
-                            home_score_updated = sub_event['Sc'][0] if 'Sc' in sub_event else None
-                            away_score_updated = sub_event['Sc'][1] if 'Sc' in sub_event else None
+                for root_event in events_response_json['Incs']:
+                    for event in events_response_json['Incs'][root_event]:
+                        if 'Incs' in event:
+                            for sub_event in event['Incs']:
+                                event_id = sub_event['ID']
+                                minute = sub_event['Min'] if 'Min' in sub_event else None
+                                minute_extra = sub_event['MinEx'] if 'MinEx' in sub_event else None
+                                player = sub_event['Pn']
+                                team = home_team if sub_event['Nm'] == 1 else away_team
+                                event_type = self.convertType(sub_event['IT'])
+                                home_score_updated = sub_event['Sc'][0] if 'Sc' in sub_event else None
+                                away_score_updated = sub_event['Sc'][1] if 'Sc' in sub_event else None
+
+                                events.append(Event(
+                                    event_id=event_id,
+                                    minute=minute,
+                                    minute_extra=minute_extra,
+                                    player=player,
+                                    team=team,
+                                    event_type=event_type,
+                                    home_score_updated=home_score_updated,
+                                    away_score_updated=away_score_updated
+                                ))
+                        else:
+                            event_id = event['ID']
+                            minute = event['Min'] if 'Min' in event else None
+                            minute_extra = event['MinEx'] if 'MinEx' in event else None
+                            player = event['Pn']
+                            team = home_team if event['Nm'] == 1 else away_team
+                            event_type = self.convertType(event['IT'])
+                            home_score_updated = event['Sc'][0] if 'Sc' in event else None
+                            away_score_updated = event['Sc'][1] if 'Sc' in event else None
 
                             events.append(Event(
                                 event_id=event_id,
@@ -159,26 +179,8 @@ class LiveScore:
                                 home_score_updated=home_score_updated,
                                 away_score_updated=away_score_updated
                             ))
-                    else:
-                        event_id = event['ID']
-                        minute = event['Min'] if 'Min' in event else None
-                        minute_extra = event['MinEx'] if 'MinEx' in event else None
-                        player = event['Pn']
-                        team = home_team if event['Nm'] == 1 else away_team
-                        event_type = self.convertType(event['IT'])
-                        home_score_updated = event['Sc'][0] if 'Sc' in event else None
-                        away_score_updated = event['Sc'][1] if 'Sc' in event else None
-
-                        events.append(Event(
-                            event_id=event_id,
-                            minute=minute,
-                            minute_extra=minute_extra,
-                            player=player,
-                            team=team,
-                            event_type=event_type,
-                            home_score_updated=home_score_updated,
-                            away_score_updated=away_score_updated
-                        ))
+            else:
+                events = None
         else:
             events = None
 
