@@ -28,6 +28,7 @@ def tweet():
                             20231124: 989516,
                             20231129: 1071807,
                             #20231202: 989573,
+                            20231204: 1029231,
                             20231209: 989499,
                             20231212: 1071804,
                             20231216: 989454,
@@ -52,9 +53,11 @@ def tweet():
                             20240518: 989347
                             }
     
-    team = "Bayern Munich"
+    team = "Torino"
+    #team = "Bayern Munich"
     todays_date = int(datetime.today().strftime("%Y%m%d"))
     todays_id = match_dates[todays_date]
+    tweet_count = 0
 
     if todays_date in match_dates.keys():
         match_dictionary = {
@@ -92,10 +95,12 @@ def tweet():
             if events is not None:
                 for event in events:
                     if event.team == match_dictionary["home team"]:
-                        match_dictionary.update({"home score": event.home_score_updated})
+                        if event.home_score_updated != None:
+                            match_dictionary.update({"home score": event.home_score_updated})
 
                     if event.team == match_dictionary["away team"]:
-                        match_dictionary.update({"away score": event.away_score_updated})
+                        if event.away_score_updated != None:
+                            match_dictionary.update({"away score": event.away_score_updated})
 
                     end_times = [45, 90, 105, 120]
                     minute = event.minute
@@ -117,8 +122,10 @@ def tweet():
 
                     status = match_events.status
                     match_dictionary.update({"status": status})
+
+                    tweet_count += 1
                 
-                    if status == "FT":
+                    if status == "FT" and tweet_count == len(events):
                         match_dictionary.update({"minute": status})
                         match_dictionary.update({"team": "ALL"})
                         match_dictionary.update({"player": "ALL"})
@@ -126,7 +133,7 @@ def tweet():
                         twitter.tweet(match_dictionary)
                         print(match_dictionary)
                 
-            time.sleep(60)
+                time.sleep(60)
 
 schedule.every(1).minute.until(timedelta(hours=3)).do(tweet())
 
