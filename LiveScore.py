@@ -143,7 +143,7 @@ class LiveScore:
                                 event_id = sub_event['ID']
                                 minute = sub_event['Min'] if 'Min' in sub_event else None
                                 minute_extra = sub_event['MinEx'] if 'MinEx' in sub_event else None
-                                player = sub_event['Pn']
+                                player = sub_event['Pn'] if 'Pn' in sub_event else None
                                 team = home_team if sub_event['Nm'] == 1 else away_team
                                 event_type = self.convertType(sub_event['IT'])
                                 home_score_updated = sub_event['Sc'][0] if 'Sc' in sub_event else None
@@ -163,7 +163,7 @@ class LiveScore:
                             event_id = event['ID']
                             minute = event['Min'] if 'Min' in event else None
                             minute_extra = event['MinEx'] if 'MinEx' in event else None
-                            player = event['Pn']
+                            player = event['Pn'] if 'Pn' in event else None
                             team = home_team if event['Nm'] == 1 else away_team
                             event_type = self.convertType(event['IT'])
                             home_score_updated = event['Sc'][0] if 'Sc' in event else None
