@@ -85,6 +85,7 @@ def tweet():
         match_dictionary.update({"away team": away_team})
 
         twitter.tweet(match_dictionary)
+        print(match_dictionary)
 
         event_log = []
 
@@ -97,6 +98,8 @@ def tweet():
         event_log.append(event_dictionary)
         match_dictionary["event count"] += 1
 
+        print("Tweet count:", match_dictionary["event count"])
+
         while match_dictionary["status"] != "FT":
             match_events = livescore.getGameInPlay(todays_id)
             if match_events and match_events.events != None:
@@ -105,11 +108,11 @@ def tweet():
                     for event in events:
                         if event.team == match_dictionary["home team"]:
                             if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
-                                match_dictionary.update({"home score": event.home_score_updated})
+                                match_dictionary["home score"] += 1
 
                         if event.team == match_dictionary["away team"]:
                             if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
-                                match_dictionary.update({"away score": event.away_score_updated})
+                                match_dictionary["away score"] += 1
 
                         end_times = [45, 90, 105, 120]
                         minute = event.minute
@@ -140,18 +143,21 @@ def tweet():
                                 event_log.append(event_dictionary)
                                 match_dictionary["event count"] += 1
                                 twitter.tweet(match_dictionary)
+                                print(match_dictionary)
 
                         status = match_events.status
 
-                        if status == "FT" and match_dictionary["event count"] == (len(events) + 1):
-                            match_dictionary.update({"home score": event.home_score_updated})
-                            match_dictionary.update({"away score": event.away_score_updated})
+                        print("MD Count:", match_dictionary["event count"])
+                        print("E Count:", len(events) + 1)
+
+                        if status == "FT": #and match_dictionary["event count"] == (len(events) + 1):
                             match_dictionary.update({"minute": status})
                             match_dictionary.update({"team": "ALL"})
                             match_dictionary.update({"player": "ALL"})
                             match_dictionary.update({"event type": status})
                             match_dictionary.update({"status": status})
                             twitter.tweet(match_dictionary)
+                            print(match_dictionary)
                             return
                         
             time.sleep(60)
