@@ -1,68 +1,32 @@
+import match_dates
 import time
 import twitter
+import traceback
+import logging
 from datetime import datetime
 from LiveScore import LiveScore, Game
 from typing import List
 
 
+match_dates = match_dates.match_dates
+
 def tweet():
-    match_dates = {
-                    20230818: 988969,
-                    20230827: 989563,
-                    20230902: 989543,
-                    20230915: 989552,
-                    20230920: 1071799,
-                    20230923: 989580,
-                    20230926: 970314,
-                    20230930: 989578,
-                    20231003: 1071800,
-                    20231008: 989581,
-                    20231021: 989608,
-                    20231024: 1071802,
-                    20231028: 989576,
-                    20231101: 1097259,
-                    20231105: 1064851,
-                    20231108: 1071809,
-                    20231111: 989575,
-                    20231124: 989516,
-                    20231129: 1071807,
-                    20231209: 989499,
-                    20231212: 1071804,
-                    20231216: 989454,
-                    20231219: 989423,
-                    20240113: 989467,
-                    20240120: 989497,
-                    20240124: 989573,
-                    20240127: 989410,
-                    20240203: 989421,
-                    20240210: 989441,
-                    20240217: 989501,
-                    20240224: 989529,
-                    20240302: 989452,
-                    20240309: 989482,
-                    20240316: 989539,
-                    20240330: 989419,
-                    20240406: 989358,
-                    20240413: 989391,
-                    20240420: 989377,
-                    20240427: 989447,
-                    20240504: 989376,
-                    20240511: 989357,
-                    20240518: 989347
-                    }
-    
-    team = "Bayern Munich"
+    team = "Borussia Monchengladbach"
+    #team = "Bayern Munich"
     todays_date = int(datetime.today().strftime("%Y%m%d"))
-    todays_id = match_dates[todays_date]
+    todays_id = match_dates[todays_date][0]
 
     if todays_date in match_dates.keys():
         match_dictionary = {
                             "date": todays_date,
-                            "id": match_dates[todays_date],
+                            "id": match_dates[todays_date][0],
+                            "start time": match_dates[todays_date][1],
                             "competition": 0,
                             "home team": 0,
-                            "away team": 0,
+                            "home team code": match_dates[todays_date][2],
                             "home score": 0,
+                            "away team": 0,
+                            "away team code": match_dates[todays_date][3],
                             "away score": 0,
                             "minute": 0,
                             "team": 0,
@@ -98,21 +62,25 @@ def tweet():
         event_log.append(event_dictionary)
         match_dictionary["event count"] += 1
 
-        print("Tweet count:", match_dictionary["event count"])
-
         while match_dictionary["status"] != "FT":
             match_events = livescore.getGameInPlay(todays_id)
+            if match_events:
+                print(match_events)
             if match_events and match_events.events != None:
                 events = match_events.events
                 if events:
                     for event in events:
                         if event.team == match_dictionary["home team"]:
                             if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
-                                match_dictionary["home score"] += 1
+                                match_dictionary.update({"home score": event.home_score_updated})
+                            if event.event_type == "VAR":
+                                match_dictionary.update({"home score": event.home_score_updated})
 
                         if event.team == match_dictionary["away team"]:
                             if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
-                                match_dictionary["away score"] += 1
+                                match_dictionary.update({"away score": event.away_score_updated})
+                            if event.event_type == "VAR":
+                                match_dictionary.update({"away score": event.away_score_updated})
 
                         end_times = [45, 90, 105, 120]
                         minute = event.minute
@@ -140,26 +108,47 @@ def tweet():
 
                         if event_dictionary not in event_log:
                             if player != None:
-                                event_log.append(event_dictionary)
-                                match_dictionary["event count"] += 1
-                                twitter.tweet(match_dictionary)
-                                print(match_dictionary)
+                                try:
+                                    event_log.append(event_dictionary)
+                                    match_dictionary["event count"] += 1
+                                    twitter.tweet(match_dictionary)
+                                    print(match_dictionary)
+                                except Exception as e:
+                                    logging.error(traceback.format_exc())
 
                         status = match_events.status
+                        match_dictionary.update({"status": status})
 
-                        print("MD Count:", match_dictionary["event count"])
-                        print("E Count:", len(events) + 1)
+                        if status == "HT" and not any(event['minute'] == "HT" for event in event_log):
+                            try:
+                                match_dictionary.update({"home score": event.home_score_updated})
+                                match_dictionary.update({"away score": event.away_score_updated})
+                                match_dictionary.update({"minute": status})
+                                match_dictionary.update({"team": "ALL"})
+                                match_dictionary.update({"player": "ALL"})
+                                match_dictionary.update({"event type": status})
+                                match_dictionary.update({"status": status})
+                                event_dictionary.update({"minute": status})
+                                event_log.append(event_dictionary)
+                                twitter.tweet(match_dictionary)
+                                print(match_dictionary)
+                            except Exception as e:
+                                logging.error(traceback.format_exc())
 
-                        if status == "FT": #and match_dictionary["event count"] == (len(events) + 1):
-                            match_dictionary.update({"minute": status})
-                            match_dictionary.update({"team": "ALL"})
-                            match_dictionary.update({"player": "ALL"})
-                            match_dictionary.update({"event type": status})
-                            match_dictionary.update({"status": status})
-                            twitter.tweet(match_dictionary)
-                            print(match_dictionary)
-                            return
-                        
-            time.sleep(60)
+                        if status == "FT":
+                            try:
+                                match_dictionary.update({"home score": match_events.home_score})
+                                match_dictionary.update({"away score": match_events.away_score})
+                                match_dictionary.update({"minute": status})
+                                match_dictionary.update({"team": "ALL"})
+                                match_dictionary.update({"player": "ALL"})
+                                match_dictionary.update({"event type": status})
+                                match_dictionary.update({"status": status})
+                                twitter.tweet(match_dictionary)
+                                print(match_dictionary)
+                                return
+                            except:
+                                logging.error(traceback.format_exc())
+            time.sleep(120)
 
 tweet = tweet()
