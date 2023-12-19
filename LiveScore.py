@@ -140,7 +140,7 @@ class LiveScore:
                     for event in events_response_json['Incs'][root_event]:
                         if 'Incs' in event:
                             for sub_event in event['Incs']:
-                                event_id = sub_event['ID']
+                                event_id = sub_event['ID'] if 'ID' in sub_event else None
                                 minute = sub_event['Min'] if 'Min' in sub_event else None
                                 minute_extra = sub_event['MinEx'] if 'MinEx' in sub_event else None
                                 player = sub_event['Pn'] if 'Pn' in sub_event else None
@@ -160,7 +160,7 @@ class LiveScore:
                                     away_score_updated=away_score_updated
                                 ))
                         else:
-                            event_id = event['ID']
+                            event_id = event['ID'] if 'ID' in event else None
                             minute = event['Min'] if 'Min' in event else None
                             minute_extra = event['MinEx'] if 'MinEx' in event else None
                             player = event['Pn'] if 'Pn' in event else None

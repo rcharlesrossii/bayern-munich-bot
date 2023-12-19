@@ -2,7 +2,6 @@ import match_dates
 import time
 import twitter
 import traceback
-import logging
 from datetime import datetime
 from LiveScore import LiveScore, Game
 from typing import List
@@ -11,8 +10,7 @@ from typing import List
 match_dates = match_dates.match_dates
 
 def tweet():
-    team = "Borussia Monchengladbach"
-    #team = "Bayern Munich"
+    team = "Bayern"
     todays_date = int(datetime.today().strftime("%Y%m%d"))
     todays_id = match_dates[todays_date][0]
 
@@ -41,11 +39,12 @@ def tweet():
         match_info: List[Game] = livescore.getGames(todays_date, team)
 
         competition = match_info[0].competition
-        home_team = match_info[0].home_team
-        away_team = match_info[0].away_team
-
         match_dictionary.update({"competition": competition})
+
+        home_team = match_info[0].home_team
         match_dictionary.update({"home team": home_team})
+
+        away_team = match_info[0].away_team
         match_dictionary.update({"away team": away_team})
 
         twitter.tweet(match_dictionary)
@@ -113,8 +112,8 @@ def tweet():
                                     match_dictionary["event count"] += 1
                                     twitter.tweet(match_dictionary)
                                     print(match_dictionary)
-                                except Exception as e:
-                                    logging.error(traceback.format_exc())
+                                except Exception:
+                                    print(traceback.print_exc())
 
                         status = match_events.status
                         match_dictionary.update({"status": status})
@@ -132,8 +131,8 @@ def tweet():
                                 event_log.append(event_dictionary)
                                 twitter.tweet(match_dictionary)
                                 print(match_dictionary)
-                            except Exception as e:
-                                logging.error(traceback.format_exc())
+                            except Exception:
+                                print(traceback.print_exc())
 
                         if status == "FT":
                             try:
@@ -147,8 +146,8 @@ def tweet():
                                 twitter.tweet(match_dictionary)
                                 print(match_dictionary)
                                 return
-                            except:
-                                logging.error(traceback.format_exc())
+                            except Exception:
+                                print(traceback.print_exc())
             time.sleep(120)
 
 tweet = tweet()
