@@ -10,7 +10,8 @@ from typing import List
 match_dates = match_dates.match_dates
 
 def tweet():
-    team = "Bayern"
+    team = "Real Madrid"
+    #team = "Bayern Munich"
     todays_date = int(datetime.today().strftime("%Y%m%d"))
     todays_id = match_dates[todays_date][0]
 
@@ -106,22 +107,21 @@ def tweet():
                                             }
 
                         if event_dictionary not in event_log:
-                            if player != None:
-                                try:
-                                    event_log.append(event_dictionary)
-                                    match_dictionary["event count"] += 1
-                                    twitter.tweet(match_dictionary)
-                                    print(match_dictionary)
-                                except Exception:
-                                    print(traceback.print_exc())
+                            try:
+                                event_log.append(event_dictionary)
+                                match_dictionary["event count"] += 1
+                                twitter.tweet(match_dictionary)
+                                print(match_dictionary)
+                            except Exception:
+                                print(traceback.print_exc())
 
                         status = match_events.status
                         match_dictionary.update({"status": status})
 
                         if status == "HT" and not any(event['minute'] == "HT" for event in event_log):
                             try:
-                                match_dictionary.update({"home score": event.home_score_updated})
-                                match_dictionary.update({"away score": event.away_score_updated})
+                                #match_dictionary.update({"home score": event.home_score_updated})
+                                #match_dictionary.update({"away score": event.away_score_updated})
                                 match_dictionary.update({"minute": status})
                                 match_dictionary.update({"team": "ALL"})
                                 match_dictionary.update({"player": "ALL"})
@@ -136,8 +136,8 @@ def tweet():
 
                         if status == "FT":
                             try:
-                                match_dictionary.update({"home score": match_events.home_score})
-                                match_dictionary.update({"away score": match_events.away_score})
+                                #match_dictionary.update({"home score": match_events.home_score})
+                                #match_dictionary.update({"away score": match_events.away_score})
                                 match_dictionary.update({"minute": status})
                                 match_dictionary.update({"team": "ALL"})
                                 match_dictionary.update({"player": "ALL"})
@@ -148,6 +148,6 @@ def tweet():
                                 return
                             except Exception:
                                 print(traceback.print_exc())
-            time.sleep(120)
+            time.sleep(60.5)
 
 tweet = tweet()

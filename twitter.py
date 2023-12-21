@@ -43,7 +43,7 @@ def tweet(match_updates):
             print("Tweet sent!")
 
     if match_updates["event type"] == "Penalty Goal":
-        tweet = "WHAT INCREDIBLE PLACEMENT!\n\n{0}'s {1} kept his composure and scored his penalty kick at the {2}' mark!\n\n#{3} {4} - {5} {6}\n\n{7}vs{8}".format(match_updates.get("team"), match_updates.get("player"), match_updates.get("minute"), match_updates.get("home team"), match_updates.get("home score"), match_updates.get("away team"), match_updates.get("away score"), match_updates.get("home team code"), match_updates.get("away team code"))
+        tweet = "WHAT INCREDIBLE PLACEMENT!\n\n{0}'s {1} kept his composure and scored his penalty kick at the {2}' mark!\n\n{3} {4} - {5} {6}\n\n#{7}vs{8}".format(match_updates.get("team"), match_updates.get("player"), match_updates.get("minute"), match_updates.get("home team"), match_updates.get("home score"), match_updates.get("away team"), match_updates.get("away score"), match_updates.get("home team code"), match_updates.get("away team code"))
         client.create_tweet(text=tweet)
         print("Tweet sent!")
 
