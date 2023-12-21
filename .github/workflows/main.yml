@@ -1,0 +1,40 @@
+name: Bayern Munich Bot
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    #Minute Hour Day Month Weekday
+    - cron: '30 08 06 01 *'
+    - cron: '30 13 12 01 *'
+    - cron: '30 08 21 01 *'
+    - cron: '30 13 24 01 *'
+    #- cron: '* * 27 01 *'
+    #- cron: '* * 03 02 *'
+    #- cron: '* * 10 02 *'
+    - cron: '00 14 14 02 *'
+    #- cron: '* * 17 02 *'
+    #- cron: '* * 24 02 *'
+    #- cron: '* * 02 03 *'
+    - cron: '00 14 05 03 *'
+    #- cron: '* * 09 03 *'
+    #- cron: '* * 16 03 *'
+    #- cron: '* * 30 03 *'
+    #- cron: '* * 06 04 *'
+    #- cron: '* * 13 04 *'
+    #- cron: '* * 20 04 *'
+    #- cron: '* * 27 04 *'
+    #- cron: '* * 04 05 *'
+    #- cron: '* * 11 05 *'
+    - cron: '30 08 18 05 *'
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Running
+      run:
+        echo "Running!"
