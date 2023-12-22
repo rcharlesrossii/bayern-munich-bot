@@ -23,7 +23,7 @@ match_dates = {
                     20231212: [1071804, 1400, "MUN", "BAY", "Champions League", "End at Full Time"],
                     20231217: [989454, 1230, "BAY", "VFB", "Bundesliga", "End at Full Time" ],
                     20231220: [989423, 1330, "WOB", "BAY", "Bundesliga", "End at Full Time"],
-                    20231221: [976716, 1200, "ALA", "RMA", "LaLiga", "End at Full Time"],
+                    20231222: [1029225, 1130, "EMP", "LAZ", "Serie A", "End at Full Time"],
                     20240106: [1129581, 830, "FCB", "BAY", "Club Friendlies 2024", "End at Full Time"],
                     20240112: [989467, 1330, "BAY", "TSG", "Bundesliga", "End at Full Time"],
                     20240121: [989497, 830, "BAY", "SVW", "Bundesliga", "End at Full Time"],
