@@ -7,8 +7,6 @@ on:
     branches: [ master ]
   schedule:
     #Minute Hour Day Month Weekday
-    # Test for Lazio match
-    - cron: '30 11 22 12 *'
     - cron: '30 08 06 01 *'
     - cron: '30 13 12 01 *'
     - cron: '30 08 21 01 *'
