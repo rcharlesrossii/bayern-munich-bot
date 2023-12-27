@@ -10,7 +10,7 @@ from typing import List
 match_dates = match_dates.match_dates
 
 def tweet():
-    team = "Bayern Munich"
+    team = "Manchester City"
     todays_date = int(datetime.today().strftime("%Y%m%d"))
     todays_id = match_dates[todays_date][0]
 
