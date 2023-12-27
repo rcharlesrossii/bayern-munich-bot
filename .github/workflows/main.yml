@@ -3,6 +3,8 @@ name: Bayern Munich Match Scheduler
 on:
   schedule:
     #Minute Hour Day Month Weekday
+    #First cron is a trial for Manchester City's match at 14:15 on 12/27/23
+    - cron: '15 14 27 12 *'
     - cron: '30 08 06 01 *'
     - cron: '30 13 12 01 *'
     - cron: '30 08 21 01 *'
@@ -13,7 +15,7 @@ on:
     - cron: '00 14 14 02 *'
     - cron: '30 10 18 02 *'
     - cron: '30 11 24 02 *'
-    - cron: '30 01 01 03 *'
+    - cron: '30 13 01 03 *'
     - cron: '00 14 05 03 *'
     - cron: '30 08 09 03 *'
     - cron: '30 09 16 03 *'
