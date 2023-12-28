@@ -3,8 +3,6 @@ name: Bayern Munich Match Scheduler
 on:
   schedule:
     #Minute Hour Day Month Weekday, ALL TIME IS IN UTC WHICH IS +6 HRS AHEAD OF CST
-    #First cron is a trial for Manchester City's match at 14:15 on 12/27/23
-    - cron: '15 20 27 12 *'
     - cron: '30 14 06 01 *'
     - cron: '30 19 12 01 *'
     - cron: '30 14 21 01 *'
