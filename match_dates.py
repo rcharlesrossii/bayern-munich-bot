@@ -44,7 +44,9 @@ match_dates = {
                     20240417: [1193798, 1400, "BAY", "ARS", "Champions League", "End at Full Time"],
                     20240420: [989377, 1130, "UBE", "BAY", "Bundesliga", "End at Full Time"],
                     20240427: [989447, 0, "BAY", "SGE", "Bundesliga", "End at Full Time"],
+                    20240430: [1193805, 1400, "BAY", "RMA", "Champions League", "End at Full Time"],
                     20240504: [989376, 0, "VFB", "BAY", "Bundesliga", "End at Full Time"],
+                    20240508: [1193803, 1400, "BAY", "RMA", "Champions League", "End at Full Time"],
                     20240511: [989357, 0, "BAY", "WOB", "Bundesliga", "End at Full Time"],
                     20240518: [989347, 830, "TSG", "BAY", "Bundesliga", "End at Full Time"]
                     }
