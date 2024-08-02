@@ -1,18 +1,26 @@
+import os
 import tweepy
-import twitter_keys
 
+
+ACCESS_TOKEN = os.environ["access_token"]
+ACCESS_TOKEN_SECRET = os.environ["access_token_secret"]
+API_KEY = os.environ["api_key"]
+API_KEY_SECRET = os.environ["api_key_secret"]
+BEARER_TOKEN = os.environ["bearer_token"]
+CLIENT_SECRET = os.environ["client_secret"]
+CLIENT_TOKEN = os.environ["client_token"]
 
 client = tweepy.Client(
-                        twitter_keys.bearer_token,
-                        twitter_keys.api_key,
-                        twitter_keys.api_key_secret,
-                        twitter_keys.access_token,
-                        twitter_keys.access_token_secret,
+                        BEARER_TOKEN,
+                        API_KEY,
+                        API_KEY_SECRET,
+                        ACCESS_TOKEN,
+                        ACCESS_TOKEN_SECRET,
                         wait_on_rate_limit=True
                         )
 
-auth = tweepy.OAuthHandler(twitter_keys.api_key, twitter_keys.api_key_secret)
-auth.set_access_token(twitter_keys.access_token, twitter_keys.access_token_secret)
+auth = tweepy.OAuthHandler(API_KEY, API_KEY_SECRET)
+auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
