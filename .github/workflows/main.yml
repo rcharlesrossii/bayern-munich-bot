@@ -29,7 +29,16 @@ on:
     - cron: '00 20 08 05 *'
     - cron: '30 16 12 05 *'
     - cron: '30 14 18 05 *'
-    
+
+env: # Set the secrets as an environment variable
+        api_key: ${{ secrets.API_KEY }}
+        api_key_secret: ${{ secrets.API_KEY_SECRET }}
+        access_token: ${{ secrets.ACCESS_TOKEN }}
+        access_token_secret: ${{ secrets.ACCESS_TOKEN_SECRET }}
+        bearer_token: ${{ secrets.BEARER_TOKEN }}
+        client_token: ${{ secrets.CLIENT_TOKEN }}
+        client_secret: ${{ secrets.CLIENT_SECRET }}
+
 jobs:
   report_match:
     runs-on: ubuntu-latest
