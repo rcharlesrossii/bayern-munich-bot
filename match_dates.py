@@ -48,5 +48,7 @@ match_dates = {
                     20240504: [989376, 0, "VFB", "BAY", "Bundesliga", "End at Full Time"],
                     20240508: [1193803, 1400, "BAY", "RMA", "Champions League", "End at Full Time"],
                     20240512: [989357, 0, "BAY", "WOB", "Bundesliga", "End at Full Time"],
-                    20240518: [989347, 830, "TSG", "BAY", "Bundesliga", "End at Full Time"]
+                    20240518: [989347, 830, "TSG", "BAY", "Bundesliga", "End at Full Time"],
+                    # Test out the new secrets on this Friendly
+                    20240810: [1224151, 1130, "TOT", "BAY", "Club Friendlies 2024", "End at Full Time"],
                     }
