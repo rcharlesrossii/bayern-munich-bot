@@ -49,6 +49,12 @@ match_dates = {
                     20240508: [1193803, 1400, "BAY", "RMA", "Champions League", "End at Full Time"],
                     20240512: [989357, 0, "BAY", "WOB", "Bundesliga", "End at Full Time"],
                     20240518: [989347, 830, "TSG", "BAY", "Bundesliga", "End at Full Time"],
-                    # Test out the new secrets on this Friendly
                     20240810: [1224151, 1130, "TOT", "BAY", "Club Friendlies 2024", "End at Full Time"],
+                    20240813: [1338573, 1100, "WSG", "BAY", "Club Friendlies 2024", "End at Full Time"],
+                    20240816: [1235516, 1345, "ULM", "BAY", "DFB Cup: Round 1", "Overtime and Penalties If Needed"],
+                    20240825: [1279257, 830, "VFB", "BAY", "Bundesliga", "End at Full Time"],
+                    20240901: [1279245, 1030, "BAY", "SCF", "Bundesliga", "End at Full Time"],
+                    20240914: [1279274, 1130, "KSV", "BAY", "Bundesliga", "End at Full Time"],
+                    20240921: [1279264, 830, "SVW", "BAY", "Bundesliga", "End at Full Time"],
+                    20240928: [1279285, 1130, "BAY", "B04", "Bundesliga", "End at Full Time"],
                     }
