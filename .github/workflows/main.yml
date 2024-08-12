@@ -30,6 +30,13 @@ on:
     - cron: '30 16 12 05 *'
     - cron: '30 14 18 05 *'
     - cron: '30 17 10 08 *'
+    - cron: '00 17 13 08 *'
+    - cron: '45 19 16 08 *'
+    - cron: '30 14 25 08 *'
+    - cron: '30 16 01 09 *'
+    - cron: '30 17 14 09 *'
+    - cron: '30 14 21 09 *'
+    - cron: '30 17 29 09 *'
 
 env: # Set the secrets as an environment variable
   access_token: ${{ secrets.ACCESS_TOKEN }}
