@@ -63,7 +63,7 @@ match_dates = {
                     20241019: [1279304, 1130, "BAY", "VFB", "Bundesliga", "End at Full Time"],
                     20241023: [1366153, 1400, "BAR", "BAY", "Champions League", "End at Full Time"],
                     20241027: [1279305, 930, "BOC", "BAY", "Bundesliga", "End at Full Time"],
-                    20241030: [1366986, 1445, "M05", "BAY", "DFB Cup: Round 1", "Overtime and Penalties If Needed"],
+                    20241030: [1366986, 1445, "M05", "BAY", "DFB Cup: Round 2", "Overtime and Penalties If Needed"],
                     20241102: [1279340, 930, "BAY", "FCU", "Bundesliga", "End at Full Time"],
                     20241106: [1366145, 1400, "BAY", "BEN", "Champions League", "End at Full Time"],
                     20241109: [1279329, 830, "STP", "BAY", "Bundesliga", "End at Full Time"],
