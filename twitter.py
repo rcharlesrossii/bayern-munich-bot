@@ -1,6 +1,6 @@
+import datetime
 import os
 import tweepy
-from datetime import datetime
 
 
 ACCESS_TOKEN = os.environ["access_token"]
