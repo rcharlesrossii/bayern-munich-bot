@@ -25,7 +25,7 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
-today = time.strftime("%Y-%m-%")
+today = time.strftime("%Y-%m-%d")
 
 def tweet(match_updates):
     if match_updates["event type"] == 0:
