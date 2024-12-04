@@ -1,6 +1,6 @@
-import datetime
 import os
 import tweepy
+from datetime import date
 
 
 ACCESS_TOKEN = os.environ["access_token"]
@@ -25,7 +25,7 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
-today = datetime.date.today()
+today = date.today()
 date = today.strftime("%m/%d/%Y")
 
 def tweet(match_updates):
