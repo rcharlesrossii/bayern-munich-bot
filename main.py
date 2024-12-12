@@ -11,8 +11,7 @@ match_dates = match_dates.match_dates
 
 def tweet():
     team = "Bayern Munich"
-    # todays_date = int(datetime.today().strftime("%Y%m%d"))
-    todays_date = 20241212
+    todays_date = int(datetime.today().strftime("%Y%m%d"))
     todays_id = match_dates[todays_date][0]
 
     if todays_date in match_dates.keys():
