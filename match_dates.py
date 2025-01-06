@@ -78,7 +78,6 @@ match_dates = {
                     20241214: [1279375, 0830, "M05", "BAY", "Bundesliga", "End at Full Time"],
                     20241220: [1279360, 1430, "BAY", "RBL", "Bundesliga", "End at Full Time"],
                     # 2025
-                    20250106: [1429913, 0430, "BAY", "SGF", "Club Friendlies 2025", "End at Full Time"],
                     20250106: [1420381, 1100, "SAL", "BAY", "Club Friendlies 2025", "End at Full Time"],
                     20250111: [1279402, 1130, "BMG", "BAY", "Bundesliga", "End at Full Time"],
                     20250115: [1279379, 1330, "BAY", "TSG", "Bundesliga", "End at Full Time"],
