@@ -118,8 +118,9 @@ def tweet():
                         status = match_events.status
                         match_dictionary.update({"status": status})
 
-                        # Check if the status is not "HT"
-                        if status != "HT":
+                        # Check if the status is "HT" and if "HT" is not already in event_log
+                        # LiveScore gets buggy and sometimes shows "HT" multiple times with different scores
+                        if status == "HT" and not any(event['event type'] == "HT" for event in event_log):
                             try:
                                 match_dictionary.update({"minute": status})
                                 match_dictionary.update({"team": "ALL"})
@@ -133,21 +134,9 @@ def tweet():
                             except Exception:
                                 print(traceback.print_exc())
 
-                        # Check if the status is "HT" and if "HT" is not already in event_log
-                        # LiveScore gets buggy and sometimes shows "HT" multiple times with different scores
-                        if status == "HT" and not any(event['minute'] == "HT" for event in event_log):
-                            try:
-                                match_dictionary.update({"minute": status})
-                                match_dictionary.update({"team": "ALL"})
-                                match_dictionary.update({"player": "ALL"})
-                                match_dictionary.update({"event type": status})
-                                match_dictionary.update({"status": status})
-                                match_dictionary.update({"minute": status})
-                                event_log.append(event_dictionary)
-                                twitter.tweet(match_dictionary)
-                                print(match_dictionary)
-                            except Exception:
-                                print(traceback.print_exc())
+                        # Check if the status is "HT" and is already in event_log
+                        if status == "HT" and any(event['event type'] == "HT" for event in event_log):
+                            pass
 
                         if status == "FT":
                             try:
