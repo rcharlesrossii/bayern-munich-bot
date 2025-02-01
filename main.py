@@ -35,9 +35,11 @@ def tweet():
                             "status": 0
                             }
     
+        # Instantiate the LiveScore class
         livescore = LiveScore()
         match_info: List[Game] = livescore.getGames(todays_date, team)
 
+        # Assign values from match_info to populate into match_dictionary
         competition = match_info[0].competition
         match_dictionary.update({"competition": competition})
 
@@ -50,8 +52,10 @@ def tweet():
         twitter.tweet(match_dictionary)
         print(match_dictionary)
 
+        # Log all the tweeted events of the match
         event_log = []
 
+        # Store the events as a dictionary
         event_dictionary = {
                             "event type": match_dictionary["event type"],
                             "event_id": match_dictionary["event id"],
@@ -61,6 +65,11 @@ def tweet():
         event_log.append(event_dictionary)
         match_dictionary["event count"] += 1
 
+        # Create a flag to check the status of Halftime ("HT")
+        # LiveScore's site gets buggy and tries to report HT multiple times
+        half_time = False
+
+        # Games conclude at full-time ("FT"), loop until full-time
         while match_dictionary["status"] != "FT":
             match_events = livescore.getGameInPlay(todays_id)
             if match_events:
@@ -69,22 +78,32 @@ def tweet():
                 events = match_events.events
                 if events:
                     for event in events:
+                        # Handle scoring for the home team
                         if event.team == match_dictionary["home team"]:
+                            # Check if a point needs to be added
                             if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
                                 match_dictionary.update({"home score": event.home_score_updated})
+                            # Check if Video Assistant Referee ("VAR") is used and no point is to be added
                             if event.event_type == "VAR":
                                 match_dictionary.update({"home score": event.home_score_updated})
 
+                        # Handle scoring for the home team
                         if event.team == match_dictionary["away team"]:
+                            # Check if a point needs to be added
                             if event.event_type == "Goal" or event.event_type == "Own Goal" or event.event_type == "Penalty Goal":
                                 match_dictionary.update({"away score": event.away_score_updated})
+                            # Check if Video Assistant Referee ("VAR") is used and no point is to be added
                             if event.event_type == "VAR":
                                 match_dictionary.update({"away score": event.away_score_updated})
 
+                        # Soccer consists of two halves and two extra time halves
                         end_times = [45, 90, 105, 120]
                         minute = event.minute
+                        # Handle additional stoppage time at the end of the halves
                         if minute in end_times and event.minute_extra != None:
                             minute = str(minute) + "' + " + str(event.minute_extra)
+
+                        # Update match_dictionary based on the current event
                         match_dictionary.update({"minute": minute})
 
                         team = event.team
@@ -99,13 +118,16 @@ def tweet():
                         event_id = event.event_id
                         match_dictionary.update({"event id": event_id})
 
+                        # Update event_dictionary based on the new event
                         event_dictionary = {
                                             "event type": match_dictionary["event type"],
                                             "event_id": match_dictionary["event id"],
                                             "minute": match_dictionary["minute"]
                                             }
 
+                        # Check if event_dictionary is not in event_log
                         if event_dictionary not in event_log:
+                            # Handle case where LiveScore has event but not the player's name
                             if player != None:
                                 try:
                                     event_log.append(event_dictionary)
@@ -115,13 +137,14 @@ def tweet():
                                 except Exception:
                                     print(traceback.print_exc())
 
+                        # Update match_dictionary status
                         status = match_events.status
                         match_dictionary.update({"status": status})
 
-                        # Check if the status is "HT" and if "HT" is not already in event_log
-                        # LiveScore gets buggy and sometimes shows "HT" multiple times with different scores
-                        if status == "HT" and not any(event['event type'] == "HT" for event in event_log):
+                        # Check if the status is "HT" and if half_time is False
+                        if status == "HT" and half_time == False:
                             try:
+                                half_time = True
                                 match_dictionary.update({"minute": status})
                                 match_dictionary.update({"team": "ALL"})
                                 match_dictionary.update({"player": "ALL"})
@@ -134,8 +157,8 @@ def tweet():
                             except Exception:
                                 print(traceback.print_exc())
 
-                        # Check if the status is "HT" and is already in event_log
-                        if status == "HT" and any(event['event type'] == "HT" for event in event_log):
+                        # Check if the status is "HT" and if half_time is True
+                        if status == "HT" and half_time == True:
                             pass
 
                         if status == "FT":
@@ -147,11 +170,12 @@ def tweet():
                                 match_dictionary.update({"player": "ALL"})
                                 match_dictionary.update({"event type": status})
                                 match_dictionary.update({"status": status})
+                                event_log.append(event_dictionary)
                                 twitter.tweet(match_dictionary)
                                 print(match_dictionary)
                                 return
                             except Exception:
                                 print(traceback.print_exc())
-            time.sleep(120)
+            time.sleep(180)
 
 tweet = tweet()
