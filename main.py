@@ -176,6 +176,6 @@ def tweet():
                                 return
                             except Exception:
                                 print(traceback.print_exc())
-            time.sleep(180)
+            time.sleep(120)
 
 tweet = tweet()
