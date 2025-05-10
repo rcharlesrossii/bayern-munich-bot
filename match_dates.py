@@ -104,7 +104,7 @@ match_dates = {
                     20250419: [1279490, 830, "FCH", "BAY", "Bundesliga", "End at Full Time"],
                     20250426: [1279492, 830, "BAY", "M05", "Bundesliga", "End at Full Time"],
                     20250503: [1279525, 830, "RBL", "BAY", "Bundesliga", "End at Full Time"],
-                    20250510: [1279537, 830, "BAY", "BMG", "Bundesliga", "End at Full Time"],
+                    20250510: [1279537, 1130, "BAY", "BMG", "Bundesliga", "End at Full Time"],
                     20250517: [1279530, 830, "TSG", "BAY", "Bundesliga", "End at Full Time"],
                     20250615: [1418909, 1700, "BAY", "AKL", "FIFA Club World Cup", "End at Full Time"],
                     20250621: [1418910, 200, "BAY", "BOC", "FIFA Club World Cup", "End at Full Time"],
