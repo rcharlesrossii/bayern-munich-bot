@@ -109,4 +109,5 @@ match_dates = {
                     20250615: [1418909, 1700, "BAY", "AKL", "FIFA Club World Cup", "End at Full Time"],
                     20250621: [1418910, 200, "BAY", "BOC", "FIFA Club World Cup", "End at Full Time"],
                     20250624: [1418912, 2000, "BEN", "BAY", "FIFA Club World Cup", "End at Full Time"],
+                    20250630: [1418971, 1500, "FLA", "BAY", "FIFA Club World Cup", "End at Full Time"],
                     }
