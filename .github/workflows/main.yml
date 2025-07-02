@@ -88,7 +88,8 @@ on:
     - cron: '00 16 15 06 *'
     - cron: '00 01 21 06 *'
     - cron: '00 19 24 06 *'
-    - cron: '45 21 29 06 *'
+    - cron: '00 20 29 06 *'
+    - cron: '00 16 05 07 *'
 
 env: # Set the secrets as an environment variable
   access_token: ${{ secrets.ACCESS_TOKEN }}
